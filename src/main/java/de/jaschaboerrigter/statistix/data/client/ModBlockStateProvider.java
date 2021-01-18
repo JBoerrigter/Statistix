@@ -1,9 +1,10 @@
 package de.jaschaboerrigter.statistix.data.client;
 
+import java.util.Objects;
+
 import de.jaschaboerrigter.statistix.utils.block.ModBlocks;
 import de.jaschaboerrigter.statistix.utils.config.ModConfig;
 import net.minecraft.data.DataGenerator;
-// import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 
@@ -15,17 +16,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        simpleBlock(ModBlocks.PokerTable);
-        
-        // BlockModelBuilder builder = models().orientableWithBottom(
-        //     ModBlocks.PokerTable.getRegistryName().getPath(), 
-        //     modLoc("block/poker_table_side"),   // Side
-        //     modLoc("block/poker_table_side"),   // Front
-        //     modLoc("block/poker_table_bottom"), // Bottom
-        //     modLoc("block/poker_table_top"));   // Top
-
-        // horizontalBlock(ModBlocks.PokerTable, builder);
-
+        horizontalBlock(ModBlocks.POKER_TABLE,
+                models().orientableWithBottom(Objects.requireNonNull(ModBlocks.POKER_TABLE.getRegistryName()).getPath(),
+                        modLoc("block/poker_table_side"), modLoc("block/poker_table_side"),
+                        modLoc("block/poker_table_bottom"), modLoc("block/poker_table_top")));
     }
-    
 }

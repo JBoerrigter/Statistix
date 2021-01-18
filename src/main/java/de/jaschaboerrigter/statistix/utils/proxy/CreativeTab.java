@@ -16,6 +16,6 @@ public class CreativeTab extends ItemGroup {
 
     @Override
     public ItemStack createIcon() {
-        return new ItemStack(ModBlocks.PokerTable);
+        return new ItemStack(ModBlocks.POKER_TABLE);
     }
 }

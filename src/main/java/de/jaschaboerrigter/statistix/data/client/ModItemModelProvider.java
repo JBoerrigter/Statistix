@@ -1,10 +1,11 @@
 package de.jaschaboerrigter.statistix.data.client;
 
+import de.jaschaboerrigter.statistix.utils.block.ModBlocks;
 import de.jaschaboerrigter.statistix.utils.config.ModConfig;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.client.model.generators.ExistingFileHelper;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
-// import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.ModelFile;
 
 public class ModItemModelProvider extends ItemModelProvider {
 
@@ -14,9 +15,10 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        withExistingParent("poker_table", modLoc("block/poker_table_bottom"));
-        // ModelFile itemGenerated = getExistingFile(mcLoc("item/generated"));
-        // getBuilder("poker_table").parent(itemGenerated).texture("layer0", "item/poker_table");
+
+        // BlockItems
+        getBuilder(ModBlocks.POKER_TABLE.getRegistryName().getPath()).parent(
+                new ModelFile.UncheckedModelFile(modLoc("block/" + ModBlocks.POKER_TABLE.getRegistryName().getPath())));
+
     }
-    
 }
