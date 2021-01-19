@@ -1,5 +1,6 @@
 package de.jaschaboerrigter.statistix;
 
+import de.jaschaboerrigter.statistix.data.DataGenerators;
 import de.jaschaboerrigter.statistix.utils.block.ModBlocks;
 import de.jaschaboerrigter.statistix.utils.config.ModConfig;
 import net.minecraft.block.Block;
@@ -14,6 +15,7 @@ public class Statistix {
     public Statistix() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        eventBus.addListener(DataGenerators::gatherData);
         eventBus.addGenericListener(Block.class, ModBlocks::registerBlocks);
         eventBus.addGenericListener(Item.class, ModBlocks::registerBlockItems);
     }
