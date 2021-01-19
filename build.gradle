@@ -41,19 +41,19 @@ minecraft {
             }
         }
         data {
-            workingDirectory project.file('run')
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'statistix', '--all', 
-                    '--existing', file('/src/main/resources').toString(),
-                    '--existing', file('/src/generated/resources').toString(),
-                    '--output', rootProject.file('src/generated/resources/')
+            workingDirectory project.file('run')
             forceExit false
             mods {
                 statistix {
                     source sourceSets.main
                 }
             }
+            args '--mod', 'statistix', '--all', 
+                '--existing', '"' + file('/src/main/resources') + '"',
+                '--existing', '"' + file('/src/generated/resources') + '"',
+                '--output', '"' + file('src/generated/resources') + '"'
         }
     }
 }
