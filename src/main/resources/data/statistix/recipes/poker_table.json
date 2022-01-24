@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "WWW",
+      "PPP",
+      "L L"
+    ],
+    "key": {
+      "W": {
+        "tag": "minecraft:wool"
+      },
+      "P": {
+        "item": "minecraft:planks"
+      }, 
+      "L": {
+          "item": "minecraft:log"
+      }
+    },
+    "result": {
+      "item": "statistix:poker_table",
+      "count": 1
+    }
+  }
