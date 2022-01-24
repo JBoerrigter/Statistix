@@ -1,113 +1,72 @@
-buildscript {
-    repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-    }
-}
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'eclipse'
-apply plugin: 'maven-publish'
-
-version = '1.0'
-group = 'de.jaschaboerrigter.statistix'
-archivesBaseName = 'statistix'
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-minecraft {
-    mappings channel: 'snapshot', version: '20200514-1.16'
-    runs {
-        client {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            mods {
-                statistix {
-                    source sourceSets.main
-                }
-            }
-        }
-        server {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            mods {
-                statistix {
-                    source sourceSets.main
-                }
-            }
-        }
-        data {
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-            workingDirectory project.file('run')
-            forceExit false
-            mods {
-                statistix {
-                    source sourceSets.main
-                }
-            }
-            args '--mod', 'statistix', '--all', 
-                '--existing', '"' + file('/src/main/resources') + '"',
-                '--existing', '"' + file('/src/generated/resources') + '"',
-                '--output', '"' + file('src/generated/resources') + '"'
-        }
-    }
+plugins {
+	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'maven-publish'
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
+
+repositories {
+	// Add repositories to retrieve artifacts from in here.
+	// You should only use this when depending on other mods because
+	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
+	// for more information about repositories.
+}
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.1-32.0.108'
+	// To change the versions see the gradle.properties file
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    // You may put jars on which you depend on in ./libs or you may define them like so..
-    // compile "some.group:artifact:version:classifier"
-    // compile "some.group:artifact:version"
+	// Fabric API. This is technically optional, but you probably want it anyway.
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+}
 
-    // Real examples
-    // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+processResources {
+	inputs.property "version", project.version
 
-    // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
 
-    // These dependencies get remapped to your current MCP mappings
-    // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+tasks.withType(JavaCompile).configureEach {
+	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
+	it.options.release = 17
+}
 
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
+java {
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+	// if it is present.
+	// If you remove this line, sources will not be generated.
+	withSourcesJar()
 }
 
 jar {
-    manifest {
-        attributes([
-            "Specification-Title": "statistix",
-            "Specification-Vendor": "jaschaboerrigter",
-            "Specification-Version": "1", 
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"jaschaboerrigter",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
+	from("LICENSE") {
+		rename { "${it}_${project.archivesBaseName}"}
+	}
 }
 
-jar.finalizedBy('reobfJar') 
-
+// configure the maven publication
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact jar
-        }
-    }
-    repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
-        }
-    }
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+
+	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+	repositories {
+		// Add repositories to publish to here.
+		// Notice: This block does NOT have the same function as the block in the top level.
+		// The repositories here will be used for publishing your artifact, not for
+		// retrieving dependencies.
+	}
 }

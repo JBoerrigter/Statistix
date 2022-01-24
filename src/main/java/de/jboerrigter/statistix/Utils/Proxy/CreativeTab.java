@@ -1,7 +1,7 @@
-package de.jaschaboerrigter.statistix.utils.proxy;
+package de.jboerrigter.statistix.Utils.Proxy;
 
-import de.jaschaboerrigter.statistix.utils.block.ModBlocks;
-import de.jaschaboerrigter.statistix.utils.config.ModConfig;
+import de.jboerrigter.statistix.Utils.Block.ModBlocks;
+import de.jboerrigter.statistix.Utils.Config.ModConfig;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
@@ -10,8 +10,7 @@ public class CreativeTab extends ItemGroup {
     public static final CreativeTab INSTANCE = new CreativeTab();
 
     public CreativeTab() {
-        super(ModConfig.CREATIVE_TAB);
-        setNoTitle();
+        super(0, ModConfig.CREATIVE_TAB);
     }
 
     @Override

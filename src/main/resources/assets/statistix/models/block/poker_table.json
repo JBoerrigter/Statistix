@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+      "all": "statistix:block/poker_table_side"
+  }
+}

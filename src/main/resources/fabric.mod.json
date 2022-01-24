@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "statistix",
+  "version": "${version}",
+
+  "name": "Statistix",
+  "description": "",
+  "authors": [
+    "Jascha Boerrigter"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/statistix/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "de.jboerrigter.statistix.Statistix"
+    ]
+  },
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.x",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
